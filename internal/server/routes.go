@@ -7,6 +7,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"metube/internal/controllers"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -16,8 +18,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Get("/", s.HelloWorldHandler)
 	r.Get("/health", s.healthHandler)
 
-	// 
-	// r.Get("/api/upload/transcode", ...) 
+	r.Post("/api/upload/transcode", controllers.UploadTrancoderHandler) 
 
 	return r
 }
