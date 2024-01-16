@@ -1,0 +1,7 @@
+.env
+tmp
+.git
+.github
+test
+keys.json
+service-account-key.json

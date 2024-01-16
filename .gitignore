@@ -26,3 +26,5 @@ tmp/
 
 # .env file
 .env
+keys.json
+service-account-key.json

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func Transcode(filename string) {
+func Transcode(filename string, ch chan bool) {
 	startTime := time.Now()
 
 	cmd := exec.Command("ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", "internal/videos/"+filename)
@@ -71,5 +71,6 @@ func Transcode(filename string) {
 	}
 	wg.Wait()
 	endTime := time.Now()
+	ch<-true
 	fmt.Printf("Total processing time: %v\n", endTime.Sub(startTime))
 }	
