@@ -6,13 +6,14 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }} # TODO: update Google Cloud project id
-  GAR_LOCATION: ${{ secrets.PROJECT_ID }} # TODO: update Artifact Registry location
+  GAR_LOCATION: ${{ secrets.GAR_LOCATION }} # TODO: update Artifact Registry location
   SERVICE: metube # TODO: update Cloud Run service name
   REGION: ${{ secrets.GCR_REGION }} # TODO: update Cloud Run service region
 
 jobs:
   deploy:
     # Add 'id-token' with the intended permissions for workload identity federation
+    environment: production
     permissions:
       contents: "read"
       id-token: "write"
