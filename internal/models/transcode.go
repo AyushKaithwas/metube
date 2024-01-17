@@ -17,10 +17,14 @@ func Transcode(filename string, ch chan bool) {
 	cmd := exec.Command("ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", "tmp/videos/"+filename)
 	// cmd := exec.Command("ffmpeg", "-i", "internal/videos/"+filename, "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0")
 	var out bytes.Buffer
+	var stderr bytes.Buffer
 	cmd.Stdout = &out
+	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error getting dimensions:", err)
+		log.Printf("Error: %v\n", err)
+		log.Printf("FFmpeg Output:\n%v", out.String())
+		log.Printf("FFmpeg Error Output:\n%v", stderr.String())
 		return
 	}
 	fmt.Println("Command output:", out.String())
@@ -62,9 +66,15 @@ func Transcode(filename string, ch chan bool) {
 			
 			cmd := exec.Command("ffmpeg", "-i", "tmp/videos/"+filename, "-vf", scaleFilter, "-c:v", "libx264", "-crf", "23", "-c:a", "aac", "-strict", "experimental", "tmp/output/"+outputFilename)
 			fmt.Println("Command:", cmd)
+			var out bytes.Buffer
+			var stderr bytes.Buffer
+			cmd.Stdout = &out
+			cmd.Stderr = &stderr
 			err = cmd.Run()
 			if err != nil {
-				log.Printf("Error transcoding %s: %v", quality, err)
+				log.Printf("Error: %v\n", err)
+				log.Printf("FFmpeg Output:\n%v", out.String())
+				log.Printf("FFmpeg Error Output:\n%v", stderr.String())
 				return
 			}
 			log.Printf("Output for %s", quality)
