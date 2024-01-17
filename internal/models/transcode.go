@@ -64,17 +64,22 @@ func Transcode(filename string, ch chan bool) {
 			// Here you would adjust the FFmpeg command parameters based on the desired quality
 			outputFilename := "output_"+filename+ quality + ".mp4"
 			
+			// Check contents of tmp/videos
+			checkCmd := exec.Command("ls", "-lah", "tmp/videos/")
+			checkOutput, checkErr := checkCmd.CombinedOutput()
+			if checkErr != nil {
+				log.Printf("Error checking tmp/videos: %v\n", checkErr)
+				log.Printf("ls Output:\n%v", string(checkOutput))
+				return
+			}
+			log.Printf("Contents of tmp/videos:\n%v", string(checkOutput))
+
 			cmd := exec.Command("ffmpeg", "-i", "tmp/videos/"+filename, "-vf", scaleFilter, "-c:v", "libx264", "-crf", "23", "-c:a", "aac", "-strict", "experimental", "tmp/output/"+outputFilename)
 			fmt.Println("Command:", cmd)
-			var out bytes.Buffer
-			var stderr bytes.Buffer
-			cmd.Stdout = &out
-			cmd.Stderr = &stderr
-			err = cmd.Run()
+			output, err := cmd.CombinedOutput()
 			if err != nil {
 				log.Printf("Error: %v\n", err)
-				log.Printf("FFmpeg Output:\n%v", out.String())
-				log.Printf("FFmpeg Error Output:\n%v", stderr.String())
+				log.Printf("FFmpeg Output:\n%v", string(output)) // convert the byte slice to a string
 				return
 			}
 			log.Printf("Output for %s", quality)
