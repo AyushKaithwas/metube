@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const uploadPath = "internal/videos/"
+const uploadPath = "tmp/videos/"
 
 func UploadToDir(w http.ResponseWriter, r *http.Request, ch chan string) {
     fmt.Println("UploadToDir: Uploading file to directory...")

@@ -14,7 +14,7 @@ import (
 func Transcode(filename string, ch chan bool) {
 	startTime := time.Now()
 
-	cmd := exec.Command("ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", "internal/videos/"+filename)
+	cmd := exec.Command("ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", "tmp/videos/"+filename)
 	// cmd := exec.Command("ffmpeg", "-i", "internal/videos/"+filename, "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0")
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -59,7 +59,7 @@ func Transcode(filename string, ch chan bool) {
 			// Here you would adjust the FFmpeg command parameters based on the desired quality
 			outputFilename := "output_"+filename+ quality + ".mp4"
 			
-			cmd := exec.Command("ffmpeg", "-i", "internal/videos/"+filename, "-vf", scaleFilter, "-c:v", "libx264", "-crf", "23", "-c:a", "aac", "-strict", "experimental", "internal/output/"+outputFilename)
+			cmd := exec.Command("ffmpeg", "-i", "tmp/videos/"+filename, "-vf", scaleFilter, "-c:v", "libx264", "-crf", "23", "-c:a", "aac", "-strict", "experimental", "tmp/output/"+outputFilename)
 			fmt.Println("Command:", cmd)
 			err = cmd.Run()
 			if err != nil {

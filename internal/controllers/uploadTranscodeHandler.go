@@ -25,7 +25,7 @@ func UploadTrancoderHandler(w http.ResponseWriter, r *http.Request) {
 	bucketName := os.Getenv("BUCKET_NAME")
     // objectName := newFileName
 	quality := "360"
-	go models.UploadToStorage(bucketName, "internal/output/"+"output_"+newFileName+quality+".mp4", newFileName+quality+".mp4", storageDone)
+	go models.UploadToStorage(bucketName, "tmp/output/"+"output_"+newFileName+quality+".mp4", newFileName+quality+".mp4", storageDone)
 	<-storageDone // Wait for uploadToStorage to finish
 
 	fmt.Println("All tasks completed.")
