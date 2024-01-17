@@ -50,8 +50,8 @@ func Transcode(filename string, ch chan bool) {
 	width, _ := strconv.Atoi(dimensions[0])
 	height, _ := strconv.Atoi(dimensions[1])
 
-	// qualities := []string{"1080", "720", "480", "360", "240", "144"}
-	qualities := []string{"144"}
+	qualities := []string{"1080", "720", "480", "360", "240", "144"}
+	// qualities := []string{"144"}
 	
 	var wg sync.WaitGroup
 
